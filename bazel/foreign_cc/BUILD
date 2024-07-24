@@ -107,6 +107,18 @@ configure_make(
 )
 
 configure_make(
+    name = "openssl",
+    configure_command = "config",
+    configure_in_place = True,
+    lib_source = "@com_github_openssl_openssl//:all",
+    out_lib_dir = "lib64",
+    out_static_libs = [
+        "libcrypto.a",
+        "libssl.a",
+    ],
+)
+
+configure_make(
     name = "colm",
     autogen = True,
     configure_in_place = True,

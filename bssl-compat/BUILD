@@ -1,4 +1,5 @@
-load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake")
+load("//bazel:envoy_build_system.bzl", "envoy_cmake", "envoy_package")
+load("//bazel:envoy_internal.bzl", "envoy_external_dep_path")
 
 filegroup(
     name = "srcs",
@@ -7,16 +8,16 @@ filegroup(
 
 licenses(["notice"])  # Apache 2
 
-cmake(
-    name = "bssl-compat",
-    lib_source = ":srcs",
-    out_shared_libs = [],
-    out_static_libs = ["libbssl-compat.a"],
-    visibility = ["//visibility:public"],
-    generate_crosstool_file = False,
-    env = { "Clang_ROOT" : "/usr/lib/llvm" },
+envoy_package()
 
-    build_args = [ "-j" ]
+envoy_cmake(
+    name = "bssl-compat",
+    cache_entries = {
+        "OPENSSL_ROOT_DIR": "$EXT_BUILD_DEPS/openssl",
+    },
+    lib_source = ":srcs",
+    out_static_libs = ["libbssl-compat.a"],
+    deps = [envoy_external_dep_path("openssl")],
 )
 
 alias(

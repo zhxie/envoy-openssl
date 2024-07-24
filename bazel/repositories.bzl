@@ -290,6 +290,7 @@ def envoy_dependencies(skip_targets = []):
     _com_github_luajit_luajit()
     _com_github_luajit2_luajit2()
     _com_github_nghttp2_nghttp2()
+    _com_github_openssl_openssl()
     _com_github_skyapm_cpp2sky()
     _com_github_nodejs_http_parser()
     _com_github_alibaba_hessian2_codec()
@@ -669,6 +670,16 @@ def _com_github_nghttp2_nghttp2():
     native.bind(
         name = "nghttp2",
         actual = "@envoy//bazel/foreign_cc:nghttp2",
+    )
+
+def _com_github_openssl_openssl():
+    external_http_archive(
+        name = "com_github_openssl_openssl",
+        build_file_content = BUILD_ALL_CONTENT,
+    )
+    native.bind(
+        name = "openssl",
+        actual = "@envoy//bazel/foreign_cc:openssl",
     )
 
 def _io_hyperscan():
