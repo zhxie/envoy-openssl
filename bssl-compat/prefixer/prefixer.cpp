@@ -709,7 +709,7 @@ int main(int argc, const char **argv) {
           globflags |= GLOB_APPEND;
         }
         for (auto i = 0; i < globbuf.gl_pathc; i++) {
-          auto p = std::filesystem::proximate(globbuf.gl_pathv[i], srcpath);
+          auto p = std::filesystem::path(globbuf.gl_pathv[i]).lexically_proximate(srcpath);
           opt::headers[p] = true;
         }
         globfree (&globbuf);
@@ -723,7 +723,7 @@ int main(int argc, const char **argv) {
           globflags |= GLOB_APPEND;
         }
         for (auto i = 0; i < globbuf.gl_pathc; i++) {
-          auto p = std::filesystem::proximate(globbuf.gl_pathv[i], srcpath);
+          auto p = std::filesystem::path(globbuf.gl_pathv[i]).lexically_proximate(srcpath);
           opt::headers[p] = false;
         }
         globfree (&globbuf);
