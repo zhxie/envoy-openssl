@@ -709,6 +709,8 @@ int main(int argc, const char **argv) {
           globflags |= GLOB_APPEND;
         }
         for (auto i = 0; i < globbuf.gl_pathc; i++) {
+          // std::filesystem::proximate will resolve symlinks which is not the behavior we want
+          // especially in Bazel environment.
           auto p = std::filesystem::path(globbuf.gl_pathv[i]).lexically_proximate(srcpath);
           opt::headers[p] = true;
         }
@@ -753,6 +755,7 @@ int main(int argc, const char **argv) {
           if (std::filesystem::exists(dsthdr)) {
             std::filesystem::remove(dsthdr);
           }
+          // Read and write files manually for giving default permission to destination files.
           std::ifstream srcfile(srcpath / hdr, std::ios::binary);
           std::ofstream dstfile(dsthdr, std::ios::binary);
           dstfile << srcfile.rdbuf();
