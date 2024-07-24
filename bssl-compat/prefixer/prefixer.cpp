@@ -753,7 +753,11 @@ int main(int argc, const char **argv) {
           if (std::filesystem::exists(dsthdr)) {
             std::filesystem::remove(dsthdr);
           }
-          std::filesystem::copy_file(srcpath / hdr, dsthdr);
+          std::ifstream srcfile(srcpath / hdr, std::ios::binary);
+          std::ofstream dstfile(dsthdr, std::ios::binary);
+          dstfile << srcfile.rdbuf();
+          srcfile.close();
+          dstfile.close();
         }
       }
 
